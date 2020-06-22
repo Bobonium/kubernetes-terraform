@@ -1,13 +1,12 @@
 provider "kubernetes" {
-  version = "1.11.0"
-
+  version = "1.11.1"
 }
 
 terraform {
   backend "kubernetes" {
     load_config_file = true
-    secret_suffix    = "TODO"
-    namespace        = "terraform-TODO"
+    secret_suffix    = "grafana"
+    namespace        = "tfstate-test"
   }
 }
 
@@ -27,7 +26,7 @@ module "this" {
 
   #varIngress.tf
   clusterIssuer               = local.clusterIssuer
-  host                        = "TODO.${local.domain}"
+  host                        = "grafana.${local.domain}"
   ingressName                 = local.ingressName
   ssoEnabled                  = local.ssoEnabled
   ssoClientId                 = local.ssoClientId
@@ -36,8 +35,8 @@ module "this" {
   ssoReplicas                 = 1
   unauthenticatedIngressPaths = local.unauthenticatedIngressPaths
 
-
-  #varStorage.tf
-  storageClassName = local.storageClassName
-  storageSize      = "10Gi"
+  #variables.tf
+  dashboards = local.dashboards
+  datasourcesYml = local.datasourcesYml
+  provisioningYml = local.provisioningYml
 }

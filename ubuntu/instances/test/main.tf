@@ -2,15 +2,13 @@ provider "kubernetes" {
   version = "1.11.0"
 
 }
-
-##requires https://github.com/hashicorp/terraform/pull/19525
-#terraform {
-#  backend "kubernetes" {
-#    load_config_file = true
-#    key              = "ubuntu"
-#    namespace        = "terraform-test"
-#  }
-#}
+terraform {
+  backend "kubernetes" {
+    load_config_file = true
+    secret_suffix    = "ubuntu"
+    namespace        = "tfstate-test"
+  }
+}
 
 module "this" {
   source = "../../"
