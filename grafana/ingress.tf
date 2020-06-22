@@ -1,8 +1,8 @@
 resource "kubernetes_ingress" "ingress" {
   metadata {
-    name = module.data.namespaceUniqueName
-    namespace = local.namespace
-    labels = module.data.labels
+    name        = module.data.namespaceUniqueName
+    namespace   = local.namespace
+    labels      = module.data.labels
     annotations = merge(module.data.ingressAnnotations, module.oauth2proxy.ingressAuthAnnotations)
   }
 
@@ -20,7 +20,7 @@ resource "kubernetes_ingress" "ingress" {
       }
     }
     tls {
-      hosts = [ var.host ]
+      hosts       = [var.host]
       secret_name = "${var.host}-tls"
     }
   }
@@ -29,9 +29,9 @@ resource "kubernetes_ingress" "ingress" {
 resource "kubernetes_ingress" "unauthenticatedIngress" {
   count = length(var.unauthenticatedIngressPaths) > 0 ? 1 : 0
   metadata {
-    name = "${module.data.namespaceUniqueName}-no-sso"
-    namespace = local.namespace
-    labels = module.data.labels
+    name        = "${module.data.namespaceUniqueName}-no-sso"
+    namespace   = local.namespace
+    labels      = module.data.labels
     annotations = merge(module.data.ingressAnnotations)
   }
 
@@ -52,7 +52,7 @@ resource "kubernetes_ingress" "unauthenticatedIngress" {
       }
     }
     tls {
-      hosts = [ var.host ]
+      hosts       = [var.host]
       secret_name = "${var.host}-tls"
     }
   }
@@ -62,22 +62,22 @@ module "oauth2proxy" {
   source = "../_oauth2proxy"
 
   #varGeneral.tf
-  instance = var.instance
-  name = "${var.name}-oauth2-proxy"
-  namespace = local.namespace
-  replicas = var.ssoReplicas
+  instance                     = var.instance
+  name                         = "${var.name}-oauth2-proxy"
+  namespace                    = local.namespace
+  replicas                     = var.ssoReplicas
   additionalNodeSelectorLabels = var.additionalNodeSelectorLabels
-  clusterName = var.clusterName
-  clusterNameDnsPrefix = var.clusterNameDnsPrefix
-  partOf = var.name
+  clusterName                  = var.clusterName
+  clusterNameDnsPrefix         = var.clusterNameDnsPrefix
+  partOf                       = var.name
 
   #varIngress.tf
-  clusterIssuer = var.clusterIssuer
-  host = var.host
-  ingressName = var.ingressName
-  ssoEnabled = var.ssoEnabled
-  ssoClientId = var.ssoClientId
+  clusterIssuer   = var.clusterIssuer
+  host            = var.host
+  ingressName     = var.ingressName
+  ssoEnabled      = var.ssoEnabled
+  ssoClientId     = var.ssoClientId
   ssoClientSecret = var.ssoClientSecret
-  ssoIssuerUrl = var.ssoIssuerUrl
+  ssoIssuerUrl    = var.ssoIssuerUrl
   deployNamespace = false
 }

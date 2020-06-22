@@ -1,7 +1,7 @@
 locals {
   configVolume = {
     "provisioning.yml" = var.provisioningYml
-    "datasources.yml" = var.datasourcesYml
+    "datasources.yml"  = var.datasourcesYml
   }
 }
 

@@ -36,7 +36,7 @@ module "this" {
   unauthenticatedIngressPaths = local.unauthenticatedIngressPaths
 
   #variables.tf
-  dashboards = local.dashboards
-  datasourcesYml = local.datasourcesYml
+  dashboards      = local.dashboards
+  datasourcesYml  = local.datasourcesYml
   provisioningYml = local.provisioningYml
 }

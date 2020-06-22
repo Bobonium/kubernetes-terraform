@@ -26,8 +26,8 @@ resource "kubernetes_cluster_role" "clusterRole" {
 
   rule {
     api_groups = [""]
-    resources = [""]
-    verbs = [""]
+    resources  = [""]
+    verbs      = [""]
   }
 
 }

@@ -1,8 +1,8 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name      = module.data.namespaceUniqueName
-    namespace = local.namespace
-    labels    = module.data.labels
+    name        = module.data.namespaceUniqueName
+    namespace   = local.namespace
+    labels      = module.data.labels
     annotations = module.data.serviceAnnotations
   }
 

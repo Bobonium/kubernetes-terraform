@@ -3,7 +3,7 @@ resource "kubernetes_deployment" "deployment" {
   metadata {
     name      = module.data.namespaceUniqueName
     namespace = local.namespace
-    labels = module.data.labels
+    labels    = module.data.labels
   }
 
   spec {
@@ -24,11 +24,11 @@ resource "kubernetes_deployment" "deployment" {
       }
 
       spec {
-        service_account_name = kubernetes_service_account.serviceAccount.metadata.0.name
-        automount_service_account_token = true
-        host_network = false
+        service_account_name             = kubernetes_service_account.serviceAccount.metadata.0.name
+        automount_service_account_token  = true
+        host_network                     = false
         termination_grace_period_seconds = 60
-        dns_policy = "ClusterFirst"
+        dns_policy                       = "ClusterFirst"
 
         node_selector = module.data.nodeSelector
         affinity {
@@ -66,11 +66,11 @@ resource "kubernetes_deployment" "deployment" {
           image = var.image
 
           security_context {
-            read_only_root_filesystem = null
+            read_only_root_filesystem  = null
             allow_privilege_escalation = false
-            privileged = false
-            run_as_user = 0
-            run_as_group = 0
+            privileged                 = false
+            run_as_user                = 0
+            run_as_group               = 0
           }
 
           port {
@@ -86,10 +86,10 @@ resource "kubernetes_deployment" "deployment" {
 
           readiness_probe {
             initial_delay_seconds = 5
-            success_threshold = 1
-            failure_threshold = 1
-            period_seconds = 60
-            timeout_seconds = 3
+            success_threshold     = 1
+            failure_threshold     = 1
+            period_seconds        = 60
+            timeout_seconds       = 3
             http_get {
               path = "/api/health"
               port = "http-metrics"
@@ -98,10 +98,10 @@ resource "kubernetes_deployment" "deployment" {
 
           liveness_probe {
             initial_delay_seconds = 300
-            success_threshold = 1
-            failure_threshold = 1
-            period_seconds = 300
-            timeout_seconds = 3
+            success_threshold     = 1
+            failure_threshold     = 1
+            period_seconds        = 300
+            timeout_seconds       = 3
             http_get {
               path = "/api/health"
               port = "http-metrics"
@@ -120,19 +120,19 @@ resource "kubernetes_deployment" "deployment" {
 
           volume_mount {
             mount_path = "/etc/grafana/provisioning/dashboards/provisioning.yml"
-            sub_path = "provisioning.yml"
-            name = kubernetes_config_map.configVolume.metadata.0.name
+            sub_path   = "provisioning.yml"
+            name       = kubernetes_config_map.configVolume.metadata.0.name
           }
           volume_mount {
             mount_path = "/etc/grafana/provisioning/datasources/datasources.yml"
-            sub_path = "datasources.yml"
-            name = kubernetes_config_map.configVolume.metadata.0.name
+            sub_path   = "datasources.yml"
+            name       = kubernetes_config_map.configVolume.metadata.0.name
           }
           dynamic "volume_mount" {
             for_each = var.dashboards
             content {
               mount_path = "/var/lib/grafana/dashboards/${volume_mount.key}"
-              name = "${module.data.namespaceUniqueName}-dashboard-${replace(volume_mount.key, "/.*\\//", "")}"
+              name       = "${module.data.namespaceUniqueName}-dashboard-${replace(volume_mount.key, "/.*\\//", "")}"
             }
           }
         }
@@ -142,11 +142,11 @@ resource "kubernetes_deployment" "deployment" {
           image = var.postgresImage
 
           security_context {
-            read_only_root_filesystem = false
+            read_only_root_filesystem  = false
             allow_privilege_escalation = false
-            privileged = false
-            run_as_user = 0
-            run_as_group = 0
+            privileged                 = false
+            run_as_user                = 0
+            run_as_group               = 0
           }
 
           env {

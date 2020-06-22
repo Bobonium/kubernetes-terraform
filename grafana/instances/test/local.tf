@@ -28,7 +28,7 @@ locals {
   #variables
   dashboards = {
     "infra" = {
-      "test.json"     = file("${path.module}/files/test.json")
+      "test.json" = file("${path.module}/files/test.json")
     }
   }
   datasourcesYml = templatefile("${path.module}/files/datasources.yml", {
